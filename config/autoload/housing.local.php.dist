@@ -1,0 +1,254 @@
+<?php
+/**
+ * Global Configuration Override
+ *
+ * This configuration override file is for overriding environment-specific and
+ * security-sensitive configuration information. Copy this file without the
+ * .dist extension at the end and populate values as needed.
+ *
+ * @NOTE: This file is ignored from Git by default with the .gitignore included
+ * in ZendSkeletonApplication. This is a good practice, as it prevents sensitive
+ * credentials from accidentally being committed into version control.
+        	        
+ */
+    
+return array(
+    'service_manager' => array(
+    		'services' => array(
+    		          /*
+    		           * this is the housing application navigation items
+    		           */
+    				'header-menu' => array(
+    						
+    				    'housing' => array(
+    								'label' => 'Housing',
+    								'route' => 'housing',
+    								'icon' => 'fa fa-',
+    								'resource' => 'route/housing',
+    						        'order' => 2
+    						),    
+    				),
+    				'staff-menu' => array(
+    		    
+    		    		'housing' => array(
+    		    				'label' => 'Housing Applications',
+    		    				'route' => 'housing-admin',
+    		    				'icon' => 'fa-home',
+    		    				'cube-color' => 'red',
+    		    				'resource' => 'home',
+    		    				'order' => 2
+    		    		),    		    
+    				), /* end of app menu */
+    				'student-menu' => array(
+    		    
+    		    		'apply' => array(
+    		    		    'pages' => array(
+    		    		        'housing' => array(
+                		    		    'label' => 'Housing',
+                		    		    'route' => 'housing',
+                		    		    'icon' => 'fa-building',
+                		    		    'cube-color' => 'blueDark',
+                		    		    'resource' => 'housing',
+                		    		    'order' => 2
+    		    		        ),
+    		    		    ),
+    		    				
+    		    		),    		    
+    				), /* end of app menu */
+    		)
+    ),
+    
+    'authnet' => array(
+        'housing' => array(
+        /**
+         * set the environment from which you want to process
+         * production is 1, testing is 2, development is 3
+         */
+        'environment' => 3,
+        
+        /**
+         * AuthorizeNet settings
+         * array key 1 is production
+         * array key 2 is test
+         * array key 3 is development
+         */
+        'api_login_id' => array(
+        		1 => '8QkXa4uX7pr',
+        		2 => '75sqQ96qHEP8',
+        		3 => '9pT5guGY4e',
+        ),
+        'transaction_key' => array(
+        		1 => '85gx9rPu4H67YaNV',
+        		2 => '7r83Sb4HUd58Tz5p',
+        		3 => '3qvCA943773EBdt8',
+        ),
+        'md5_setting' => array(
+        		1 => '7027748001',
+        		2 => '7027748001',
+        		3 => '7027748001'
+        ),
+        //below are the settings for the authorize.net/housingaccount
+//         'api_login_id' => array(
+//         		1 => '44quRc5tA5',
+//         		2 => '75sqQ96qHEP8',
+//         		3 => '75sqQ96qHEP8',
+//         ),
+//         'transaction_key' => array(
+//         		1 => '9r9GP9L8387Qwa7S',
+//         		2 => '7r83Sb4HUd58Tz5p',
+//         		3 => '7r83Sb4HUd58Tz5p',
+//         ),
+//         'md5_setting' => array(
+//         		1 => '1qaz2wsx3edc',
+//         		2 => '1qaz2wsx3edc',
+//         		3 => '1qaz2wsx3edc'
+//         ),
+        'relay_url' => array(
+        		1 => 'https://apps.ess.unlv.edu/global/authorizenet/paymentgateway.cfm',
+        		2 => 'https://apps.ess.unlv.edu/global/authorizenet/paymentgateway.cfm',
+        		3 => 'https://apps.ess.unlv.edu/global/authorizenet/paymentgateway.cfm',
+        ),
+        //the receipt path to the view - this will set the template to this customized module receipt page 
+        'receipt' => array(
+        		1 => 'housing/payment/complete',
+        		2 => 'housing/payment/complete',
+        		3 => 'housing/payment/complete',
+        ),
+        'session_container' => array(
+        		1 => 'housing_application',
+        		2 => 'housing_application',
+        		3 => 'housing_application',
+        ),
+    )
+    ),
+
+    /*
+     * This is an extension of the bjyauthorize config file but specific to this module
+     * ACL Authorization configuration for the Housing application
+     * Check out the comments in bjyauthorize.global.php or bjyauthorize.local.php for 
+     * more detailed instrumentation of the code. 
+     */
+    'bjyauthorize' => array(
+	   'role_providers' => array(
+	       'BjyAuthorize\Provider\Role\Config' => array(
+	           'user' => array(
+	               //children will see everything an authenticated user can see
+	       	       'children' => array(
+	       	           'housing-editor' => array(),
+	       	           'housing-admin' => array(),
+	       	           'housing-viewer' => array()
+	               )
+	           )
+            )
+        ),
+        'resource_providers' => array(
+            'BjyAuthorize\Provider\Resource\Config' => array(
+                //housing application
+                'route/housing' => array(),
+                'route/housing/admin' => array(),
+            )
+	     ),
+	     'rule_providers' => array(
+	     		'BjyAuthorize\Provider\Rule\Config' => array(
+	     				'allow' => array(
+	     						//housing application
+	     						array(
+	     						    array('admin', 'developer', 'housing-admin', 'housing-editor', 'housing-viewer'), 
+	     						    'route/housing/admin'
+	     						),
+	     						array(
+	     						    array('user'), 
+	     						    'route/housing'
+	     						),
+	     				),
+	     				'deny' => array(),
+	     		),
+	     ),
+	     'guards' => array(
+	     		/* If this guard is specified here (i.e. it is enabled), it will block
+	     		 * access to all controllers and actions unless they are specified here.
+	     		 * if you do not specify actions under a controller all actions will inherit the controllers privileges 
+	             */
+	     		'BjyAuthorize\Guard\Controller' => array(
+        	     		//housing application
+        	     		array(
+        	     				'controller' => 'Housing\Controller\Index',
+        	     				'roles' => array('user')
+        	     		),
+        	     		array(
+        	     				'controller' => 'Housing\Controller\Payment',
+        	     				'roles' => array('user')
+        	     		),
+        	     		array(
+        	     				'controller' => 'Housing\Controller\Survey',
+        	     				'roles' => array('user')
+        	     		),
+        	     		array(
+        	     				'controller' => 'Housing\Controller\Year',
+        	     				'roles' => array('admin', 'developer', 'housing-admin', 'housing-editor', 'housing-viewer')
+        	     		),
+        	     		array(
+        	     				'controller' => 'Housing\Controller\Terms',
+        	     				'roles' => array('admin', 'developer', 'housing-admin', 'housing-editor', 'housing-viewer')
+        	     		),
+        	     		array(
+        	     				'controller' => 'Housing\Controller\Admin',
+        	     				'roles' => array('admin', 'developer', 'housing-admin', 'housing-editor', 'housing-viewer')
+        	     		),
+	     		)
+	     ),
+	     				
+    ),
+    /*
+     * Doctrine ORM connections to Oracle Databases for Housing application
+     */
+    'doctrine' => array(
+    		//choose the entity you need based on the environment
+            'entitymanager' => array(
+            		'orm_housing_development' => array(
+            				'connection'    => 'orm_housing_development',
+            				'configuration' => 'orm_housing'
+            		),
+            		'orm_housing_production' => array(
+            				'connection'    => 'orm_housing_production',
+            				'configuration' => 'orm_housing'
+            		),
+            		'orm_stg' => array(
+            				'connection'    => 'orm_stg',
+            				'configuration' => 'orm_housing'
+            		)
+            ),
+    		 
+    		'configuration' => array(
+    				'orm_housing' => array(
+    						'metadata_cache'    => 'array',
+    						'query_cache'       => 'array',
+    						'result_cache'      => 'array',
+    						'driver'            => 'orm_housing',
+    						'generate_proxies'  => true,
+    						'proxy_dir'         => 'data/DoctrineORMModule/Proxy',
+    						'proxy_namespace'   => 'DoctrineORMModule\Proxy',
+    						'filters'           => array()
+    				)
+    		),
+    		    
+    		'driver' => array(
+    				'Housing_Driver' => array(
+    						'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+    						'cache' => 'array',
+    						'paths' => array(
+    								__DIR__ . '/../src/Housing/Entity'
+    						)
+    				),
+    				'orm_housing' => array(
+    						'class'   => 'Doctrine\ORM\Mapping\Driver\DriverChain',
+    						'drivers' => array(
+    								'Housing\Entity' =>  'Housing_Driver'
+    						)
+    				),
+    		),
+    		 
+    		 
+    ),
+
+);

@@ -1,0 +1,112 @@
+<?php
+/**
+ * edit this file to add navigation for new modules
+* that are added to the framework
+* @desc multi level array descriptive of module structures
+* @author Yassine Nachti <yassine.nachti@unlv.edu>
+*/
+
+return array(
+		'service_manager' => array(
+				'services' => array(
+						'staff-menu' => array(
+								'developer' => array(
+										'label' => 'Developer',
+										'route' => 'developer',
+										'icon' => 'fa fa-laptop',
+										'cube-color' => 'blueDark',
+										'resource' => 'route/developer',
+								    'order' => 200
+								)
+						), /* end of menu */
+				)
+		),
+
+		'authnet' => array(
+				'developer' => array(
+						/**
+						 * set the environment from which you want to process
+                         * production is 1, testing is 2, development is 3
+                         */
+						'environment' => 3,
+
+						/**
+						 * AuthorizeNet settings
+                         * array key 1 is production
+                         * array key 2 is test
+                         * array key 3 is development
+                         */
+						'api_login_id' => array(
+								1 => '8QkXa4uX7pr',
+								2 => '75sqQ96qHEP8',
+								3 => '9pT5guGY4e',
+						),
+						'transaction_key' => array(
+								1 => '85gx9rPu4H67YaNV',
+								2 => '7r83Sb4HUd58Tz5p',
+								3 => '3qvCA943773EBdt8',
+						),
+						'md5_setting' => array(
+								1 => '7027748001',
+								2 => '7027748001',
+								3 => '7027748001'
+						),
+						'relay_url' => array(
+								1 => 'http://apps.ess.unlv.edu/transcriptrequest',
+								2 => 'https://apps.ess.unlv.edu/global/authorizenet/paymentgateway.cfm',
+								3 => 'https://apps.ess.unlv.edu/global/authorizenet/paymentgateway.cfm',
+						),
+						//the receipt path to the view - this will set the template to this customized module receipt page
+						'receipt' => array(
+								1 => 'documentation/widget/reception',
+								2 => 'documentation/widget/reception',
+								3 => 'documentation/widget/reception',
+						),
+						'session_container' => array(
+								1 => 'documntation_application',
+								2 => 'documntation_application',
+								3 => 'documntation_application',
+						),
+				)
+		),
+		/*
+		 * This is an extension of the bjyauthorize config file but specific to this module
+		 * ACL Authorization configuration for the Housing application
+		 * Check out the comments in bjyauthorize.global.php or bjyauthorize.local.php for
+		 * more detailed instrumentation of the code.
+		 */
+		'bjyauthorize' => array(
+				'resource_providers' => array(
+						'BjyAuthorize\Provider\Resource\Config' => array(
+								//documentation application
+								'route/developer' => array(),
+
+						)
+				),
+				'rule_providers' => array(
+						'BjyAuthorize\Provider\Rule\Config' => array(
+								'allow' => array(
+										//documentation application
+										array(array('developer'), 'route/developer')
+								),
+								'deny' => array(
+
+								),
+						),
+				),
+				'guards' => array(
+						/* If this guard is specified here (i.e. it is enabled), it will block
+						 * access to all routes unless they are specified here.
+						 */
+
+				'BjyAuthorize\Guard\Controller' => array(
+						//documentation application
+						array(
+								'controller' => 'Developer\Controller\Index',
+								'roles' => array('developer')
+						)
+				)
+),
+
+),
+);

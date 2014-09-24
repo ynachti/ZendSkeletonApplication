@@ -1,0 +1,117 @@
+<?php
+/**
+ * Global Configuration Override
+ *
+ * This configuration override file is for overriding environment-specific and
+ * security-sensitive configuration information. Copy this file without the
+ * .dist extension at the end and populate values as needed.
+ *
+ * @NOTE: This file is ignored from Git by default with the .gitignore included
+ * in ZendSkeletonApplication. This is a good practice, as it prevents sensitive
+ * credentials from accidentally being committed into version control.
+        	        
+ */
+
+return array(
+    'honors' => array(
+    		'environment' => 3,
+    ),
+    /*
+     * This is an extension of the bjyauthorize config file but specific to this module
+    * ACL Authorization configuration for the Housing application
+    * Check out the comments in bjyauthorize.global.php or bjyauthorize.local.php for
+    * more detailed instrumentation of the code.
+    */
+    'bjyauthorize' => array(
+    		'role_providers' => array(
+    				'BjyAuthorize\Provider\Role\Config' => array(
+    						'user' => array(
+    								//children will see everything an authenticated user can see
+    								'children' => array(
+    										'honors' => array(),    										
+    								)
+    						)
+    				)
+    		),
+
+    		'guards' => array(
+    				/* If this guard is specified here (i.e. it is enabled), it will block
+    				 * access to all controllers and actions unless they are specified here.
+    * if you do not specify actions under a controller all actions will inherit the controllers privileges
+    */
+    				'BjyAuthorize\Guard\Controller' => array(
+    						//housing application
+    						array(
+    								'controller' => 'Honors\Controller\Honors',
+    								'roles' => array('user')
+    						),
+    						array(
+    								'controller' => 'Honors\Controller\AdminSave',
+    								'roles' => array('admin', 'developer', 'honors')
+    						),
+    						array(
+    								'controller' => 'Honors\Controller\File',
+    								'roles' => array('admin', 'developer', 'honors')
+    						),
+    						array(
+    								'controller' => 'Honors\Controller\Admin',
+    								'roles' => array('admin', 'developer', 'honors')
+    						),
+    				)
+    		),
+    
+    ),
+	'doctrine' => array(	     
+	    'connection' => array(		    
+		     'orm_honors' => array(
+		     		'driverClass' => 'Doctrine\DBAL\Driver\OCI8\Driver',
+		     		'params' => array(
+		     				'username' => 'test1',
+		     				'password' => 'w8e6u_e',
+		     				'connectionstring' => '(DESCRIPTION = (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = SEFS-INFRA.SYSAPPS.UNLV.EDU)(PORT = 1521))) (CONNECT_DATA = (SERVICE_NAME = slifedev.sefsinfra.sysapps.unlv.edu) (SRVR = DEDICATED)))',
+		     		)
+		     ),
+		      
+   	     ),
+   	      	      
+         'configuration' => array(
+        		'orm_honors' => array(
+        				'metadata_cache'    => 'array',
+        				'query_cache'       => 'array',
+        				'result_cache'      => 'array',
+        				'driver'            => 'orm_honors',
+        				'generate_proxies'  => true,
+        				'proxy_dir'         => 'data/DoctrineORMModule/Proxy',
+        				'proxy_namespace'   => 'DoctrineORMModule\Proxy',
+        				'filters'           => array()
+        		)
+         ),
+            	    	        
+         'entitymanager' => array(
+        		'orm_honors' => array(
+        				'connection'    => 'orm_honors',
+        				'configuration' => 'orm_honors'
+        		)
+         ),
+
+
+         'driver' => array(
+         		'honors_Driver' => array(
+         				'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+         				'cache' => 'array',
+         				'paths' => array(
+         						__DIR__ . '/../src/honors/Entity'
+         				)
+         		),
+         		'orm_honors' => array(
+         				'class'   => 'Doctrine\ORM\Mapping\Driver\DriverChain',
+         				'drivers' => array(
+         						'Honors\Entity' =>  'honors_Driver'
+         				)
+         		),
+         ),
+         
+         
+	 ),
+
+);

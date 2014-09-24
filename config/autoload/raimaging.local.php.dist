@@ -1,0 +1,215 @@
+<?php
+/**
+ * Global Configuration Override
+ *
+ * This configuration override file is for overriding environment-specific and
+ * security-sensitive configuration information. Copy this file without the
+ * .dist extension at the end and populate values as needed.
+ *
+ * @NOTE: This file is ignored from Git by default with the .gitignore included
+ * in ZendSkeletonApplication. This is a good practice, as it prevents sensitive
+ * credentials from accidentally being committed into version control.
+        	        
+ */
+
+return array(
+    'survey' => array(
+    		'environment' => 3,
+    ),
+    'service_manager' => array(
+    		'services' => array(
+    				/*
+    				 * this is the Rebelaid Imaging application navigation items
+                     */
+    				'staff-menu' => array(
+    					'rebelaid' => array(
+    							'label' => 'RebelAid Imaging',
+    							'route' => 'rebelaidimaging',
+    							'icon' => 'fa-money',
+    							'cube-color' => 'red',
+    							'resource' => 'route/staff/raimaging',
+    							'order' => 3,
+    					),
+    				), /* end of app menu */
+    				'module-nav' => array(
+        				'students' => array(
+        						'label' => 'Reviews',
+        						'route' => 'rebelaidimaging',
+        						'icon' => 'fa fa-money',
+        						'cube-color' => 'red',
+        						'resource' => 'route/staff/raimaging',
+        						'order' => 1,
+        						'pages' => array(
+        								array(
+        										'label' => 'Upload',
+        										'route' => 'rebelaidimaging',
+        										'resource' => 'route/staff/raimaging'
+        								),
+        								array(
+        										'label' => 'Process',
+        										'route' => 'raimaging-images',
+        										'resource' => 'route/staff/raimaging'
+        								),
+        						)
+        				),
+        				'images' => array(
+        						'label' => 'Imaging',
+        						'route' => 'rebelaidimaging',
+        						'icon' => 'fa fa-money',
+        						'cube-color' => 'red',
+        						'resource' => 'route/staff/raimaging',
+        						'order' => 2,
+        						'pages' => array(
+        								array(
+        										'label' => 'Upload',
+        										'route' => 'rebelaidimaging',
+        										'resource' => 'route/staff/raimaging'
+        								),
+        								array(
+        										'label' => 'Process',
+        										'route' => 'raimaging-images',
+        										'resource' => 'route/staff/raimaging'
+        								),
+        						)
+        				),
+        				'administration' => array(
+        						'label' => 'Administration',
+        						'route' => 'rebelaidimaging',
+        						'icon' => 'fa fa-money',
+        						'cube-color' => 'red',
+        						'resource' => 'route/admin/raimaging',
+        						'order' => 3,
+        						'pages' => array(
+        								array(
+        										'label' => 'Upload',
+        										'route' => 'rebelaidimaging',
+        										'resource' => 'route/admin/raimaging'
+        								),
+        								array(
+        										'label' => 'Process',
+        										'route' => 'raimaging-images',
+        										'resource' => 'route/admin/raimaging'
+        								),
+        						)
+        				),        							
+    				), /* end of module menu */
+        	),		
+    ),
+    /*
+     * This is an extension of the bjyauthorize config file but specific to this module
+    * ACL Authorization configuration for the Housing application
+    * Check out the comments in bjyauthorize.global.php or bjyauthorize.local.php for
+    * more detailed instrumentation of the code.
+    */
+    'bjyauthorize' => array(
+            'resource_providers' => array(
+            		'BjyAuthorize\Provider\Resource\Config' => array(
+            				//documentation application for each controller a resource should be defined
+            				//this is used in the navigation acl filtering
+            				'route/staff/raimaging/student' => array(),
+            				'route/staff/raimaging/images' => array(),
+            				'route/staff/raimaging' => array(),
+            				'route/admin/raimaging' => array()
+            		)
+            ),
+            'rule_providers' => array(
+            		'BjyAuthorize\Provider\Rule\Config' => array(
+            				'allow' => array(
+            						//documentation application
+            						array(array('developer'), 'route/staff/raimaging/student'),
+            						array(array('developer'), 'route/staff/raimaging/images'),
+            						array(array('developer'), 'route/staff/raimaging'),
+            						array(array('raimaging-useradmin'), 'route/admin/raimaging'),            
+            				),
+            				'deny' => array(
+            
+            				),
+            		),
+            ),
+            'role_providers' => array(
+    				'BjyAuthorize\Provider\Role\Config' => array(
+    						'user' => array(
+    								//children will see everything an authenticated user can see
+    								'children' => array(
+    										'raimaging-ga' => array(),    										
+    										'raimaging-upload' => array(),    										
+    										'raimaging-process' => array(),    										
+    										'raimaging-edit' => array(),    										
+    										'raimaging-readeronly' => array(),    										
+    										'raimaging-admin' => array(),    										
+    										'raimaging-useradmin' => array(),    										
+    								)
+    						)
+    				)
+    		),    		
+    		'guards' => array(
+    				/* If this guard is specified here (i.e. it is enabled), it will block
+    				 * access to all controllers and actions unless they are specified here.
+    				 * if you do not specify actions under a controller all actions will inherit the controllers privileges
+    				 */
+    				'BjyAuthorize\Guard\Controller' => array(
+    						//raimaging application
+    						array(
+    								'controller' => 'Rebelaidimaging\Controller\Index',
+    								'roles' => array('developer')
+    						),
+    						array(
+    								'controller' => 'Rebelaidimaging\Controller\Administration',
+    								'roles' => array('raimaging-useradmin')
+    						),
+    						array(
+    								'controller' => 'Rebelaidimaging\Controller\Images',
+    								'roles' => array('developer')
+    						),
+    						array(
+    								'controller' => 'Rebelaidimaging\Controller\Student',
+    								'roles' => array('developer')
+    						),
+    						
+    				)
+    		),
+    ),
+    /*
+     * Doctrine ORM connections to Oracle Databases for Survey
+    */
+    'doctrine' => array(
+    		//choose the entity you need based on the environment
+    		'entitymanager' => array(
+    				'orm_raimaging_development' => array(
+    						'connection'    => 'orm_raimaging_development',
+    						'configuration' => 'orm_raimaging'
+    				),
+    				'orm_raimaging_test' => array(
+    						'connection'    => 'orm_raimaging_test',
+    						'configuration' => 'orm_raimaging'
+    				),
+    		),
+    		'configuration' => array(
+    				'orm_raimaging' => array(
+    						'metadata_cache'    => 'array',
+    						'query_cache'       => 'array',
+    						'result_cache'      => 'array',
+    						'driver'            => 'orm_raimaging',
+    						'generate_proxies'  => true,
+    						'proxy_dir'         => 'data/DoctrineORMModule/Proxy',
+    						'proxy_namespace'   => 'DoctrineORMModule\Proxy',
+    						'filters'           => array()
+    				)
+    		),    		
+    		'driver' => array(    
+    				'Raimaging_Driver' => array(
+    						'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+    						'cache' => 'array',
+    						'paths' => array(__DIR__ . '/../src/Rebelaidimaging/Entity')
+    				),
+    
+    				'orm_raimaging' => array(
+    				        'class'   => 'Doctrine\ORM\Mapping\Driver\DriverChain',
+    						'drivers' => array(
+    								'Rebelaidimaging\Entity' => 'Raimaging_Driver'
+    						),
+    				),
+    		),    		 
+    ),
+
+);
