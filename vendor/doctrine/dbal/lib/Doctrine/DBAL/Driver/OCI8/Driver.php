@@ -35,8 +35,8 @@ class Driver implements \Doctrine\DBAL\Driver
     public function connect(array $params, $username = null, $password = null, array $driverOptions = array())
     {
         return new OCI8Connection(
-            $username,
-            $password,
+            $params['username'],
+            $params['password'],
             $this->_constructDsn($params),
             isset($params['charset']) ? $params['charset'] : null,
             isset($params['sessionMode']) ? $params['sessionMode'] : OCI_DEFAULT,

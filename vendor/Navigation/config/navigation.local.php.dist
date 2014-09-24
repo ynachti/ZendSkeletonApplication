@@ -1,0 +1,25 @@
+<?php  
+/**
+ * edit this file to add navigation for new modules
+ * that are added to the framework
+ * @desc multi level array descriptive of module structures
+ * @author Yassine Nachti <yassine.nachti@unlv.edu>
+ */
+
+return array(
+//     'service_manager' => array(
+//         'services' => array(
+//             'menu' => array(
+                
+//             		'home' => array(
+//             				'label' => 'Home',
+//             				'route' => 'home',
+//             				'icon' => 'fa fa-home',
+//             				'access' => 'all',            		        
+//             		),
+                
+            		
+//             ), /* end of menu */
+//             )
+//         )
+    );

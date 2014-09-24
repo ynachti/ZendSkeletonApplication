@@ -1,0 +1,10 @@
+<div class="features">
+<h1>Payment Gateway</h1>
+<? echo $this->flashMessenger()->render('Authnet\Controller', array('alert', 'alert-danger')); ?>
+
+<h2 class="fa"><span><?= ($this->app['title']) ? sprintf($this->translate($this->app['title'])) : '' ?></span></h2>
+</div>
+
+<div class="row">
+<? echo $this->AuthnetDpmWidget($app['name'], $cart['total'], $cart['item'].' - '. $cart['description'] , $cart['invoice']); ?>               
+</div>

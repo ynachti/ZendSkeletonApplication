@@ -1,0 +1,22 @@
+<?php  if(!empty($this->container)):?>
+<ul>
+<li>
+<a href="user/profile" class="jarvismetro-tile big-cubes bg-color-blueDark"> <span class="iconbox"> <i class="fa fa-user fa-4x"></i> <span>My Profile</span></span></a>
+</li>
+    <?php
+    // iterate through the pages
+    foreach ($this->container as $key => $page):
+        ?>
+        <li>
+        <a 
+        href="<? echo $page->getHref() ?>" 
+        class="jarvismetro-tile big-cubes bg-color-<?= ($page->get("cube-color") != "" ? $page->get("cube-color") : 'blueDark')?>"> 
+        <span class="iconbox"> 
+            <i class="fa fa-4x <?= ($page->get("icon") !== "") ? $page->get("icon") : ''; ?>"></i>    
+            <span class="centered"><? echo $page->getLabel() ?></span>
+        </span>
+        </a>
+        </li>
+        <?php endforeach; ?>
+</ul>
+<?php  endif; ?>

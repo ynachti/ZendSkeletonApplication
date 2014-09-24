@@ -1,0 +1,158 @@
+<section id="widget-grid" class="">
+<?
+if($this->form):
+$form = $this->form;
+
+$form->setAttribute('id', 'authnet_dpm');
+$form->setAttribute('action', $form_settings['post_url']);
+$form->prepare();
+
+echo $this->form()->openTag($form);
+if($this->form_settings){
+foreach ($this->form_settings['hidden_fields'] as $key => $value) :
+    if (! empty($value)) :
+        $hidden_elements = new Zend\Form\Element\Hidden($key);
+        $hidden_elements->setValue($value);
+        echo $this->formHidden($hidden_elements);    
+    endif;
+endforeach;
+}
+?>
+<div class="row">
+    
+		
+				<!-- NEW COL START -->
+				<article class="col-sm-12 col-md-12 col-lg-6 sortable-grid ui-sortable">
+		
+					<!-- Widget ID (each widget will need unique ID)-->
+					<div role="widget" class="jarviswidget jarviswidget-sortable" id="wid-id-2" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-custombutton="false">
+						<!-- widget options:
+						usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+		
+						data-widget-colorbutton="false"
+						data-widget-editbutton="false"
+						data-widget-togglebutton="false"
+						data-widget-deletebutton="false"
+						data-widget-fullscreenbutton="false"
+						data-widget-custombutton="false"
+						data-widget-collapsed="true"
+						data-widget-sortable="false"
+		
+						-->
+						<header role="heading"><div role="menu" class="jarviswidget-ctrls">   <a data-original-title="Collapse" href="#" class="button-icon jarviswidget-toggle-btn" rel="tooltip" title="" data-placement="bottom"><i class="fa fa-minus "></i></a> <a data-original-title="Fullscreen" href="javascript:void(0);" class="button-icon jarviswidget-fullscreen-btn" rel="tooltip" title="" data-placement="bottom"><i class="fa fa-resize-full "></i></a> <a data-original-title="Delete" href="javascript:void(0);" class="button-icon jarviswidget-delete-btn" rel="tooltip" title="" data-placement="bottom"><i class="fa fa-times"></i></a></div>
+							<span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+							<h2>Plugins &amp; Enhancers </h2>
+		
+						<span class="jarviswidget-loader"><i class="fa fa-refresh fa-spin"></i></span></header>
+		
+						<!-- widget div-->
+						<div role="content">
+		
+							<!-- widget edit box -->
+							<div class="jarviswidget-editbox">
+								<!-- This area used as dropdown edit box -->
+		
+							</div>
+							<!-- end widget edit box -->
+		
+							<!-- widget content -->
+							<div class="widget-body">
+		                      <?php echo $this->formcollection($form); ?>	
+							</div>
+							<!-- end widget content -->
+		
+						</div>
+						<!-- end widget div -->
+		
+					</div>
+					<!-- end widget -->
+		
+				</article>
+				<!-- END COL -->			
+</div>
+</section>
+
+
+<br>
+<br>
+<div class="row">
+	<div class="span3">
+		<legend><?php echo $this->translate('Payment Method'); ?></legend>
+	</div>
+	<div class="span3">
+
+		<div id="tab" class="btn-group" data-toggle="buttons-radio">
+			<a href="#" id="paytype_cc" class="btn btn-info active">Credit Card</a>
+			<a href="#" id="paytype_bank" class="btn btn-default">Bank Account</a>
+		</div>
+
+		<div hidden>
+			<input type="radio" name="ptype" value="cc" checked /> Credit Card<br />
+			<input type="radio" name="ptype" value="bank" /> Bank Account
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="span6">
+		<div id="ccpayment">
+			<div style="padding: 5px">
+				<img width="43" height="26" alt="Visa" title="Visa"
+					src="<?= $this->basePath() . '/img/icons/payments/V.gif'; ?>"></img>
+				<img width="41" height="26" alt="MasterCard" title="MasterCard"
+					src="<?= $this->basePath() . '/img/icons/payments/MC.gif'; ?>"></img>
+				<img width="40" height="26" alt="American Express"
+					title="American Express"
+					src="<?= $this->basePath() . '/img/icons/payments/Amex.gif'; ?>"></img>
+				<img width="40" height="26" alt="Discover" title="Discover"
+					src="<?= $this->basePath() . '/img/icons/payments/Disc.gif'; ?>"></img>
+			</div>
+			<div class="element-group">
+				<div class="row">
+					<div class="span4">
+                            <?php echo $this->formRow($form->get('x_card_num')); ?>
+                         </div>
+				</div>
+				<div class="row">
+					<div class="span2">
+        					    <?php echo $this->formRow($form->get('x_exp_date')); ?>                                    
+        			      	</div>
+					<div class="span2">                                    
+                                <?php echo $this->formRow($form->get('x_card_code')); ?>						  
+        					</div>
+				</div>
+			</div>
+		</div>
+		<div id="bankpayment" hidden>
+			<div class="row">
+                         <?php echo $this->formRow($form->get('x_acct_name')); ?>    
+                	</div>
+			<div class="row">
+                         <?php echo $this->formRow($form->get('x_bank_name')); ?>    
+                	</div>
+			<div class="row">
+                         <?php echo $this->formRow($form->get('x_acct_num')); ?>    
+                	</div>
+			<div class="row">
+                         <?php echo $this->formRow($form->get('x_route_num')); ?>    
+                	</div>
+			<div class="row">
+                         <?php echo $this->formRow($form->get('x_acct_type')); ?>    
+                	</div>
+
+		</div>
+	</div>
+</div>
+</div>
+<br>
+<br>
+<div class="row"
+	style="margin-left: auto; margin-right: auto; width: 300px;">
+	<button type="submit" name="submit" id="btnsubmitpayment"
+		class="btn btn-primary btn-block" value="Submit">Submit Payment</button>
+</div>
+<h1 id="anchorbottom"></h1>
+<?
+
+echo $this->form()->closeTag($form);
+endif;
+?>

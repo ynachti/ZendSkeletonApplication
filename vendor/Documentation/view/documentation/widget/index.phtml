@@ -1,0 +1,21 @@
+<div class="features">
+<h2 class="fa"><span><?php echo sprintf($this->translate($this->title)) ?></span></h2>
+<?php  if($this->description): ?><p><?php echo sprintf($this->translate($this->description)) ?></p><?php  endif; ?>
+<p> where is this at? </p>
+<div class="row">    	
+    	<?php 
+        if(is_array($this->apps)): 
+        
+        foreach ($this->apps as $name => $route):
+        ?>
+        <div class="well span3">
+        <a href="<?= strtolower($route) ?>">
+            <div class="centered">
+                <i class="fa fa- fa-5x" ></i>
+                <h3 class="title"><?= $this->translate($name) ?></h3>
+            </div>
+        </a>
+        </div>
+        <?php endforeach; endif; ?>        
+</div>
+</div>

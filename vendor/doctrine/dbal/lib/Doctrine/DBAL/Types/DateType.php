@@ -20,6 +20,7 @@
 namespace Doctrine\DBAL\Types;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use \DateTime as DateFormat;
 
 /**
  * Type that maps an SQL DATE to a PHP Date object.
@@ -49,8 +50,7 @@ class DateType extends Type
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
-        return ($value !== null)
-            ? $value->format($platform->getDateFormatString()) : null;
+        return ($value !== null) ? $value->format($platform->getDateFormatString()) : null;
     }
 
     /**
@@ -61,8 +61,7 @@ class DateType extends Type
         if ($value === null || $value instanceof \DateTime) {
             return $value;
         }
-
-        $val = \DateTime::createFromFormat('!'.$platform->getDateFormatString(), $value);
+        $val = date($platform->getDateFormatString(), strtotime($value));
         if ( ! $val) {
             throw ConversionException::conversionFailedFormat($value, $this->getName(), $platform->getDateFormatString());
         }

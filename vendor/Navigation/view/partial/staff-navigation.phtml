@@ -1,0 +1,42 @@
+
+<ul style="">
+    <? foreach ($this->container as $page): ?>
+       
+        <? /* @var $page Zend\Navigation\Page\Mvc */ ?>
+        <? $hasChildren = $page->hasPages()?>
+        <? if (!$hasChildren): ?>
+            <li <? if ($page->isActive()) echo ' class="active"' ?>><a 
+		title="<? echo $page->getLabel() ?>" class=""
+		href="<? echo $page->getHref() ?>"
+		<? if ($page->getTarget() != ""): ?>
+		target="<? echo $page->getTarget(); ?>" <? endif; ?>>
+                        <? if ($page->get("icon") !== ""): ?>
+                        <i class="fa fa-lg <? echo $page->get("icon"); ?>"></i>
+                    <? endif; ?>
+                    <span class="menu-item-parent"><? echo $page->getLabel() ?></span>
+	</a></li>
+        <? else: ?>
+            <li class="<? if ($page->isActive(true)) echo ' active' ?> ">
+		        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <? if ($page->get("icon") !== ""): ?>
+                        <i class="fa fa-lg <? echo $page->get("icon"); ?>"></i>
+                    <? endif; ?>
+                    <span class="menu-item-parent"><? echo $page->getLabel() ?></span>
+<!-- 			<b class="collapse-sign"><em class="fa fa-expand-o"></em></b> -->
+	            </a>
+		        <ul>
+                    <? foreach ($page->getPages() as $child): ?>
+                        <li <? if ($child->isActive()) echo ' class="active"' ?>>
+                        <a href="<? echo $child->getHref() ?>"	<? if ($child->getTarget() != ""): ?> target="<? echo $child->getTarget(); ?>" <? endif; ?>>
+                                    <? if ($child->get("icon") !== ""): ?>
+                                        <i class="fa fa-lg <? echo $child->get("icon"); ?>"></i>
+                                    <? endif; ?>
+                                <? echo $child->getLabel()?>
+                        </a>
+                        </li>
+                    <? endforeach ?>
+                </ul>
+          </li>
+        <?
+endif;  ?>  <? endforeach ?>
+</ul>

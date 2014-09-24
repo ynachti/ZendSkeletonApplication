@@ -1,0 +1,11 @@
+<?  if(!empty($this->container)):?>
+    <li><a href="/student_services">Student's Area</a></li>   
+    <?
+    // iterate through the pages
+    foreach ($this->container as $key => $page):
+    ?>
+        <li><a href="<?php echo $page->getHref(); ?>"><?php echo ucwords($page->getLabel()); ?></a></li>
+    <? 
+    endforeach; 
+    ?>
+<?  endif; ?>
