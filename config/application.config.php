@@ -1,8 +1,33 @@
 <?php
 return array(
     // This should be an array of module namespaces used in the application.
+    /* if you disable a module in these directives by deleting the value or commenting it out
+     * you should also rename the corresponding autoload/ config file to e.g transcript.local.php.dist
+     * otherwise the navigation config will cause the application to not render properly 
+     */
     'modules' => array(
+        /* DO NOT EDIT */
         'Application',
+        'Navigation',
+        'DoctrineModule',
+        'DoctrineORMModule',
+        'ZfcBase',
+        'ZfcUser',
+        'Authnet',
+        'ZendDeveloperTools',      
+        'BjyAuthorize',
+        'Signature',
+        //'SlmLocale',
+        /* END OF DO NOT EDIT */
+        
+        /* below this point you can edit the module array */
+        //'Documentation', 
+        //'Housing',
+        //'Honors',
+        //'Developer',
+        //'Survey',
+        //'Rebelaidimaging',
+        //'Transcript'       
     ),
 
     // These are various options for the listeners attached to the ModuleManager
@@ -13,14 +38,15 @@ return array(
         // Module class.
         'module_paths' => array(
             './module',
-            './vendor',
+            './vendor','./module',
         ),
 
         // An array of paths from which to glob configuration files after
-        // modules are loaded. These effectively override configuration
+        // modules are loaded. These effectively overide configuration
         // provided by modules themselves. Paths may use GLOB_BRACE notation.
         'config_glob_paths' => array(
             'config/autoload/{,*.}{global,local}.php',
+            //'config/autoload/.{,*.}{global,local}.php'
         ),
 
         // Whether or not to enable a configuration cache.
