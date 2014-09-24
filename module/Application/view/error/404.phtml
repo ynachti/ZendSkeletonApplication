@@ -1,8 +1,15 @@
-<h1><?php echo $this->translate('A 404 error occurred') ?></h1>
-<h2><?php echo $this->message ?></h2>
+<div class="row span12 well centered">
+    <div style="-moz-border-radius: 20px; -webkit-border-radius: 20px; border-radius: 20px; -khtml-border-radius: 20px;" class="well  span4 alert-error bubble">
+        <h2 class="lead"><?php echo $this->translate("Somthn'z wong with your request... <br> AH!!! " . $this->message . "<br>Please look elsewhere!") ?></h2>    
+    </div>
+    
+    <div class="span12">
+        <img src="<?php echo $this->basePath() . '/img/Rebel-Head-Color.png'; ?>" class="pull-left display-image" alt="Goooo Rebeeells!!!!">
+    </div>
+</div>
 
 <?php if (isset($this->reason) && $this->reason): ?>
-
+<div class="row">
 <?php
 $reasonMessage= '';
 switch ($this->reason) {
@@ -24,7 +31,7 @@ switch ($this->reason) {
 }
 ?>
 
-<p><?php echo $reasonMessage ?></p>
+<p><?php echo '<code>'. $reasonMessage . '</code>' ?></p>
 
 <?php endif ?>
 
@@ -32,13 +39,13 @@ switch ($this->reason) {
 
 <dl>
     <dt><?php echo $this->translate('Controller') ?>:</dt>
-    <dd><?php echo $this->escapeHtml($this->controller) ?>
+    <dd><?php echo '<pre>' . $this->escapeHtml($this->controller) . '</pre>'?></dd>
 <?php
 if (isset($this->controller_class)
     && $this->controller_class
     && $this->controller_class != $this->controller
 ) {
-    echo '(' . sprintf($this->translate('resolves to %s'), $this->escapeHtml($this->controller_class)) . ')';
+    echo '<dd><pre>(Controller ' . sprintf($this->translate('resolves to %s'), $this->escapeHtml($this->controller_class)) . ')</pre></dd>';
 }
 ?>
 </dd>
@@ -103,5 +110,6 @@ if (isset($this->controller_class)
 <h3><?php echo $this->translate('No Exception available') ?></h3>
 
 <?php endif ?>
-
+</div>
 <?php endif ?>
+

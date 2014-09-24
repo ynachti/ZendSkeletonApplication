@@ -1,8 +1,15 @@
-<h1><?php echo $this->translate('An error occurred') ?></h1>
-<h2><?php echo $this->message ?></h2>
+<div class="row centered">
+    <div style="-moz-border-radius: 20px; -webkit-border-radius: 20px; border-radius: 20px; -khtml-border-radius: 20px;" class="well  span4 alert-error bubble">
+        <h2 class="lead"><?php echo $this->translate("Oops!! somthn'z wong with your request... <br> AH!!! <b>" . $this->message . '</b>') ?></h2>    
+    </div>
+    
+    <div class="span12">
+        <img src="<?php echo $this->basePath() . '/img/Rebel-Head-Color.png'; ?>" class="pull-left display-image" alt="Goooo Rebeeells!!!!">
+    </div>
+</div>
 
 <?php if (isset($this->display_exceptions) && $this->display_exceptions): ?>
-
+<div class="row">
 <?php if(isset($this->exception) && $this->exception instanceof Exception): ?>
 <hr/>
 <h2><?php echo $this->translate('Additional information') ?>:</h2>
@@ -14,11 +21,11 @@
     </dd>
     <dt><?php echo $this->translate('Message') ?>:</dt>
     <dd>
-        <pre class="prettyprint linenums"><?php echo $this->escapeHtml($this->exception->getMessage()) ?></pre>
+        <pre class="prettyprint linenums"><?php echo $this->exception->getMessage() ?></pre>
     </dd>
     <dt><?php echo $this->translate('Stack trace') ?>:</dt>
     <dd>
-        <pre class="prettyprint linenums"><?php echo $this->escapeHtml($this->exception->getTraceAsString()) ?></pre>
+        <pre class="prettyprint linenums"><?php echo $this->exception->getTraceAsString() ?></pre>
     </dd>
 </dl>
 <?php
@@ -38,11 +45,11 @@
             </dd>
             <dt><?php echo $this->translate('Message') ?>:</dt>
             <dd>
-                <pre class="prettyprint linenums"><?php echo $this->escapeHtml($e->getMessage()) ?></pre>
+                <pre class="prettyprint linenums"><?php echo $e->getMessage() ?></pre>
             </dd>
             <dt><?php echo $this->translate('Stack trace') ?>:</dt>
             <dd>
-                <pre class="prettyprint linenums"><?php echo $this->escapeHtml($e->getTraceAsString()) ?></pre>
+                <pre class="prettyprint linenums"><?php echo $e->getTraceAsString() ?></pre>
             </dd>
         </dl>
     </li>
@@ -58,5 +65,5 @@
 <h3><?php echo $this->translate('No Exception available') ?></h3>
 
 <?php endif ?>
-
+</div>
 <?php endif ?>

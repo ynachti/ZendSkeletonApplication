@@ -1,0 +1,52 @@
+<?
+/* @var $container Zend\Navigation\Navigation */
+$container = $this->container;
+?>
+<ul class="<? echo $this->navigation()->menu()->getUlClass();?>">
+    <? foreach ($container as $page): ?>
+
+        <? /* @var $page Zend\Navigation\Page\Mvc */ ?>
+        <? $hasChildren = $page->hasPages() ?>
+        <? if (!$hasChildren): ?>
+            <li <? if ($page->isActive()) echo ' class="active"' ?>>
+                <a class="nav-header" href="<? echo $page->getHref() ?>"
+                    <? if ($page->getTarget() != ""): ?>
+                        target="<? echo $page->getTarget(); ?>"
+                    <? endif; ?>
+                    >
+                        <? if ($page->get("icon") !== ""): ?>
+                        <i class="<? echo $page->get("icon"); ?>"></i>
+                    <? endif; ?>
+                    <? echo $page->getLabel() ?>
+                </a>
+            </li>
+        <? else: ?>
+            <li class="dropdown<? if ($page->isActive(true)) echo ' active' ?>">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <? if ($page->get("icon") !== ""): ?>
+                        <i class="<? echo $page->get("icon"); ?>"></i>
+                    <? endif; ?>
+                    <? echo $page->getLabel() ?>
+                    <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <? foreach ($page->getPages() as $child): ?>
+                        <li<? if ($child->isActive()) echo ' class="active"' ?>>
+                            <a
+                                href="<? echo $child->getHref() ?>"
+                                <? if ($child->getTarget() != ""): ?>
+                                    target="<? echo $child->getTarget(); ?>"
+                                <? endif; ?>
+                                >
+                                    <? if ($child->get("icon") !== ""): ?>
+                                    <i class="<? echo $child->get("icon"); ?>"></i>
+                                <? endif; ?>
+                                <? echo $child->getLabel() ?>
+                            </a>
+                        </li>
+                    <? endforeach ?>
+                </ul>
+            </li>
+        <? endif ?>
+    <? endforeach ?>
+</ul>

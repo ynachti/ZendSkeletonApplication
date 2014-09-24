@@ -1,0 +1,260 @@
+<?
+if (! $this->ZfcUserIdentity ()) :
+	echo $this->zfcUserLoginWidget ();
+	die ();
+							
+endif;
+?>
+<?php echo $this->doctype(); ?>
+
+<html lang="en">
+<head>
+<meta charset="utf-8">
+        <?php echo $this->headTitle($this->translate('Administrative Applications'))->setSeparator(' - ')->setAutoEscape(false)?>
+        <?php echo $this->headMeta ()->appendName ( 'viewport', 'width=device-width, initial-scale=1.0' )->appendHttpEquiv ( 'X-UA-Compatible', 'IE=edge' )?>
+
+        <!-- Le styles -->        
+        <?php
+			echo $this->headLink ( array (
+				'rel' => 'shortcut icon',
+				'type' => 'image/vnd.microsoft.icon',
+				'href' => $this->basePath () . '/img/favicon/faviconblack.ico'))
+				//->prependStylesheet ( $this->basePath () . '/css/style.css' )	
+				// smartadmin styles
+				->prependStylesheet ( $this->basePath () . '/css/smartadmin-production.css' )
+				->prependStylesheet ( $this->basePath () . '/css/smartadmin-skins.css' )
+				->prependStylesheet ( $this->basePath () . '/css/lockscreen.css' )
+                // general styles
+                ->prependStylesheet ( $this->basePath () . '/css/font-awesome.min.css' )
+                ->prependStylesheet ( $this->basePath () . '/css/bootstrap.min.css' )
+		?>								
+        <!-- Scripts -->
+        <?php
+        echo $this->headScript()->prependFile($this->basePath() . '/js/html5.js', 'text/javascript', array(
+                    'conditional' => 'lt IE 9'))
+                ->prependFile($this->basePath () . '/js/libs/jquery-2.0.2.min.js')               
+        ?>      
+</head>
+
+<body class="smart-style-1">
+	<!-- HEADER -->
+	<header id="header">
+		<div id="logo-group">
+			<!-- PLACE YOUR LOGO HERE -->
+			<span id="logo"> <img
+				src="<?php echo $this->basePath () . '/img/unlv-logo-white.png'; ?>"
+				alt="UNLV"></span>
+			<!-- END LOGO PLACEHOLDER -->
+		</div>
+							<!-- projects dropdown -->
+					<div id="project-context">
+
+						<span class="label">Applications:</span>
+						<span id="project-selector" class="popover-trigger-element dropdown-toggle" data-toggle="dropdown">My Applications <i class="fa fa-angle-down"></i></span>
+
+						<!-- Suggestion: populate this list with fetch and push technique -->
+						<ul class="dropdown-menu">
+								<?php echo $this->navigation ( 'staff-navigation' )->menu()->setPartial ( 'partial/staff-myapps', 'Navigation'); ?>
+							<li class="divider"></li>
+							<li>
+								<a href="<?php echo $this->url('zfcuser/logout') ?>"><i class="fa fa-power-off"></i> <?php echo $this->translate('Sign Out') ?></a>
+							</li>
+						</ul>
+						<!-- end dropdown-menu-->
+
+					</div>
+					<!-- end projects dropdown -->
+
+		<!-- pulled right: nav area -->
+		<div class="pull-right">
+
+			<!-- collapse menu button -->
+			<div id="hide-menu" class="btn-header pull-right">
+				<span><a href="javascript:void(0);" title="Collapse Menu"><i
+						class="fa fa-reorder"></i></a></span>
+			</div>
+			<!-- end collapse menu -->
+			<!-- fullscreen button -->
+			<div id="fullscreen" class="btn-header transparent pull-right">
+				<span> <a href="javascript:void(0);"
+					onclick="launchFullscreen(document.documentElement);"
+					title="Full Screen"><i class="fa fa-fullscreen"></i></a>
+				</span>
+			</div>
+			<!-- end fullscreen button -->
+			<!-- logout button -->						
+			<? if ($this->zfcUserDisplayName() != null): ?>
+			<div id="logout" class="btn-header transparent pull-right">
+				<span> <a href="<?php echo $this->url('zfcuser/logout') ?>"
+					title="<?php echo $this->translate('Sign Out'); ?>"
+					data-logout-msg="<?= $this->translate('You can improve your security further after logging out by closing this opened browser') ?>">
+						<i class="fa fa-power-off"></i>
+				</a>
+				</span>
+			</div>
+			<? else : ?>
+			<div class="btn-header transparent pull-right">
+				<span> <a title="<?php echo $this->translate('Sign In'); ?>"
+					href="<?php echo $this->url('zfcuser/login') ?>"><i
+						class="icon icon-share-alt"></i> <span class="text">Login</span> </a>
+				</span>
+			</div>
+			<?  endif; ?>							
+			<!-- end logout button -->
+
+			<!-- search mobile button (this is hidden till mobile view port) -->
+			<div id="search-mobile" class="btn-header transparent pull-right">
+				<span> <a href="javascript:void(0)" title="Search"><i
+						class="fa fa-search"></i></a>
+				</span>
+			</div>
+			<!-- end search mobile button -->
+
+		</div>
+		<!-- end pulled right: nav area -->
+
+	</header>
+	<!-- END HEADER -->
+	<!-- SHORTCUT AREA : With large tiles (activated via clicking user name tag)
+				Note: These tiles are completely responsive,
+				you can add as many as you like
+				-->
+	<div id="shortcut">
+	   <?php echo $this->navigation ( 'staff-navigation' )->menu ()->setPartial ( 'partial/shortcut.phtml', 'Navigation'); ?>
+	</div>
+	<!-- END SHORTCUT AREA -->
+
+	<!--/.nav-collapse -->
+
+	<!-- Left panel : Navigation area -->
+	<!-- Note: This width of the aside area can be adjusted through LESS variables -->
+	<aside id="left-panel">
+		<!-- User info -->
+		<div class="login-info">
+			<span> <!-- User image size is adjusted inside CSS, it should stay as it --> 	
+                <? if ($this->zfcUserDisplayName() == null): ?>
+                   <a title=""
+				href="<?php echo $this->url('zfcuser/login') ?>"> <i
+					class="icon icon-share-alt"></i> <span class="text">Login</span>
+			</a>
+                <? else: ?>
+                    <a href="javascript:void(0);" id="show-shortcut"> <img
+					src="<?php echo $this->basePath () . '/img/avatars/male.png' ?>"
+					alt="me" class="online" /> <span class="text"><?= $this->zfcUserDisplayName() ?></span></a>
+                <? endif; ?>
+				<i class="fa fa-angle-down"></i>
+			</span>
+		</div>
+		<!-- end user info -->
+
+		<!-- NAVIGATION : This navigation is also responsive
+			To make this navigation dynamic please make sure to link the node
+			(the reference to the nav > ul) after page load. Or the navigation
+			will not initialize.
+			-->
+		<nav>			
+			<?php echo $this->navigation ( 'side-menu' )->menu ()->setPartial ( 'partial/staff-navigation.phtml', 'Navigation'); ?>			
+		</nav>
+		<span class="minifyme"> <i class="fa fa-arrow-circle-left hit"></i></span>
+	</aside>
+
+	<!-- END NAVIGATION -->
+	<div id="main" role="main">
+
+		<div id="ribbon">
+			<span class="ribbon-button-alignment"> <span id="refresh"
+				class="btn btn-ribbon" data-title="refresh" rel="tooltip"
+				data-placement="bottom" data-original-title="<i class='text-warning fa fa-warning'></i> Warning! This will reset all
+					your widget settings." data-html="true" data-reset-msg="Would you
+					like to RESET all your saved widgets and clear LocalStorage?"><i
+					class="fa fa-refresh"></i></span>
+			</span>
+
+			<!-- breadcrumb -->
+			<ol class="breadcrumb"></ol>
+			<!-- end breadcrumb -->
+
+			<!-- You can also add more buttons to the
+			ribbon for further usability
+	
+			Example below:
+	
+			<span class="ribbon-button-alignment pull-right">
+			<span id="search" class="btn btn-ribbon hidden-xs" data-title="search"><i class="fa-grid"></i> Change Grid</span>
+			<span id="add" class="btn btn-ribbon hidden-xs" data-title="add"><i class="fa-plus"></i> Add</span>
+			<span id="search" class="btn btn-ribbon" data-title="search"><i class="fa-search"></i> <span class="hidden-mobile">Search</span></span>
+			</span> 
+            -->
+		</div>
+
+		<div id="content">            
+	        <? if(isset($this->alert)): ?>
+	        <div class="">
+				<form class="lockscreen animated flipInY" action="http://dev.ess.unlv.edu/yassine/PHP/index.php">
+					<div class="logo">
+						<h1 class="semi-bold">
+							<img height="100px" src="http://dev.ess.unlv.edu/yassine/PHP/img/logo-o.png" alt="">
+							UNLV
+						</h1>
+					</div>
+					<div>
+						<img src="<?php echo $this->basePath () . '/img/unlv-logo-red.png'; ?>" alt="" height="120" width="120">
+						<div>
+							<h1>
+								<i class="fa fa-user fa-3x text-muted air air-top-right hidden-mobile"></i>
+								Under Maintenance<small><i class="fa fa-lock text-muted"></i> &nbsp;<?=$this->app ?> is under Maintenance at this time. Please check back later!</small>
+							</h1>
+							<p class="text-muted">
+								<a href="mailto:eas@unlv">EAS@UNLV</a>
+							</p>
+
+							<p class="no-margin margin-top-5">
+								Logged as someone else? <a
+									href="http://dev.ess.unlv.edu/yassine/PHP/login.php"> Click here</a>
+							</p>
+						</div>
+
+					</div>
+					<p class="font-xs margin-top-5">Copyright EAS 2014-2020.</p>
+				</form>
+			</div>
+			<div>
+				<div class="alert in alert-block fade alert-alert"><?=$this->app ?> is under Maintenance at this time. Please check back later!</div>
+			</div>
+	        <? endif; ?>
+	        <?
+				if (! $this->ZfcUserIdentity () && ! isset ( $this->alert )) :
+					echo $this->zfcUserLoginWidget ();														
+	        	endif;
+				if ($this->ZfcUserIdentity () && ! isset ( $this->alert )) :			
+					echo $this->content;																	
+	        	endif;
+			?>
+		</div>
+	</div>
+<?php
+echo $this->inlineScript ()	
+								->appendFile ($this->basePath () . '/js/libs/jquery-ui-1.10.3.min.js')
+								->appendFile ($this->basePath () . '/js/bootstrap/bootstrap.min.js' )
+								->appendFile ($this->basePath () . '/js/app.js' )
+								->appendFile ($this->basePath () . '/js/notification/SmartNotification.min.js' )
+								->appendFile ($this->basePath () . '/js/smartwidgets/jarvis.widget.min.js' )
+								->appendFile ($this->basePath () . '/js/plugin/easy-pie-chart/jquery.easy-pie-chart.min.js' )
+								->appendFile ($this->basePath () . '/js/plugin/sparkline/jquery.sparkline.min.js' )
+								->appendFile ($this->basePath () . '/js/plugin/jquery-validate/jquery.validate.min.js' )
+								->appendFile ($this->basePath () . '/js/plugin/masked-input/jquery.maskedinput.min.js' )
+								->appendFile ($this->basePath () . '/js/plugin/select2/select2.min.js' )
+								->appendFile ($this->basePath () . '/js/plugin/bootstrap-slider/bootstrap-slider.min.js' )
+								->appendFile ($this->basePath () . '/js/plugin/msie-fix/jquery.mb.browser.min.js' )
+								->appendFile ($this->basePath () . '/js/plugin/fastclick/fastclick.js' );
+?>
+	<script type="text/javascript">
+	// DO NOT REMOVE : GLOBAL FUNCTIONS!
+	$(document).ready(function() {
+		   drawBreadCrumb();
+	});
+	</script>		
+
+
+</body>
+</html>

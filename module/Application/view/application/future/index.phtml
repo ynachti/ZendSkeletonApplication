@@ -1,0 +1,29 @@
+ 
+<script>
+$(function(){
+    $(document).ready(function(){
+        ("#showform").click(function(){
+        $("#winpopup").dialog({
+            draggable:true,
+            modal: true,
+            autoOpen: false,
+            height:300,
+            width:400,
+            resizable: false,
+            title:'Form Ajax',
+            position:'center'
+        });
+        $("#winpopup").load($(this).attr('href'));
+        $("#winpopup").dialog("open");
+         
+        return false;
+    });
+});
+});
+</script>
+
+<a id="showform" href="<?php echo $this->url('future', array('action'=>'showform', 'controller'=>'future')); ?>">Show Form</a>
+                     
+<!-- empty div to save dialog temporary -->
+<div id="winpopup"></div>
+

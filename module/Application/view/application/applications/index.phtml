@@ -1,0 +1,26 @@
+<!--Current students index page-->
+<?
+if ($this->ZfcUserIdentity()):
+    $identity = $this->zfcUserIdentity();
+    
+?>
+    
+    <h3><?php echo ($this->title != NULL) ? $this->translate($this->title) : NULL; ?></h3>
+
+    <div class="row">
+        <?
+        if ($this->apps):
+            foreach ($this->apps as $key => $value):
+                ?>
+                <div class="well span3">
+                    <a href="<?= $this->url($value) ?>">
+                        <div class="centered">
+                            <i class="fa fa-home fa-5x"></i>
+                            <h3 class="title"><?= $this->translate($key) ?></h3>
+                        </div>
+                    </a>
+                </div>
+            <? endforeach; ?>
+        </div>
+    <? endif; ?>
+<? endif; ?>
