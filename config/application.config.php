@@ -16,7 +16,7 @@ return array(
         'Authnet',
         'ZendDeveloperTools',      
         'BjyAuthorize',
-        'Signature',
+        //'Signature',
         //'SlmLocale',
         /* END OF DO NOT EDIT */
         

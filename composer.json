@@ -13,6 +13,7 @@
         "doctrine/doctrine-orm-module": "0.7.*",
         "zf-commons/zfc-user": "dev-master",
         "bjyoungblood/bjy-authorize": "dev-master",
-        "slm/locale": "dev-master"
+        "slm/locale": "dev-master",
+        "zendframework/zend-developer-tools": "dev-master"
     }
 }
